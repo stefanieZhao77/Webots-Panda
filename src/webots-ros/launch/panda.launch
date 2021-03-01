@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="duration" default="20" doc="Duration in seconds"/>
+  <arg name="auto-close" default="false" doc="Startup mode"/>
+  <node name="robot_state_initializer_node" pkg="webots_ros" type="robot_state_initializer_node" args="$(arg duration)" required="$(arg auto-close)"/>
+</launch>
