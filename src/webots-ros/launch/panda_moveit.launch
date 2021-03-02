@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="load_gripper" default="true" />
+  <arg name="prefix" default="" doc="Prefix to robot's joints' and links' names" />
+  <arg name="auto-close" default="false" doc="Startup mode"/>
+
+  <!-- for debug -->
+  <arg name="debug" default="false" />
+  <arg unless="$(arg debug)" name="launch_prefix" value="" />
+  <arg if="$(arg debug)" name="launch_prefix" value="gdb --ex run --args" />
+
+  <param name="prefix" value="$(arg prefix)" type="str" />
+  <param name="use_sim_time" value="true" type="bool" />
+
+
+  
+  <!-- send robot urdf to param server -->
+  <param name="robot_description" command="$(find xacro)/xacro '$(find franka_description)/robots/panda_arm_hand.urdf.xacro'" if="$(arg load_gripper)" />
+  <param name="robot_description" command="$(find xacro)/xacro '$(find franka_description)/robots/panda_arm.urdf.xacro'" unless="$(arg load_gripper)" />
+
+  <!-- Robot state publisher -->
+  <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher">
+    <param name="publish_frequency" type="double" value="50.0" />
+    <param name="tf_prefix" type="string" value="" />
+  </node>
+
+  <!--Run move group-->
+  <include file="$(find panda_moveit_config)/launch/move_group.launch">
+    <!-- <arg name="debug" default="$(arg debug)" /> -->
+  </include>
+
+  <!-- Fake Calibration -->
+  <!-- <node pkg="rostopic" type="rostopic" name="fake_joint_calibration" args="pub /calibrated std_msgs/Bool true" /> -->
+
+  <!-- Webots controller -->
+  <node name="panda_robots_ros" pkg="webots_ros" type="panda_robots_ros.py" required="$(arg auto-close)"/>
+
+  <!--Moveit trajectory plan-->
+  <node name="panda_motion" pkg="webots_ros" respawn="false" type="panda_motion" output="screen" launch-prefix="$(arg launch_prefix)" />
+
+</launch>

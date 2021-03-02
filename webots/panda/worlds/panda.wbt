@@ -1,0 +1,55 @@
+#VRML_SIM R2021a utf8
+WorldInfo {
+  coordinateSystem "NUE"
+}
+Viewpoint {
+  orientation 0 1 0 1.5707963267948966
+  position 1.4382242161722218 0.49999999999999994 -1.8818669081863527e-17
+}
+TexturedBackground {
+}
+DEF RED_STICK Solid {
+  translation 0.51 0.5 0
+  rotation 0 -1 0 3.141592653589793
+  children [
+    DEF STICK_SHAPE Shape {
+      appearance PBRAppearance {
+        baseColor 1 0.155604 0.246125
+        roughness 0.783569247
+        metalness 0
+      }
+      geometry Cylinder {
+        height 0.2
+        radius 0.02
+      }
+    }
+  ]
+  name "red stick"
+  boundingObject Box {
+    size 0.037 0.2 0.037
+  }
+  physics Physics {
+  }
+}
+TexturedBackgroundLight {
+}
+Floor {
+}
+Table {
+  translation 0.5 0 0
+  rotation 0 1 0 1.5707996938995747
+  name "table1"
+  size 0.6 0.4 0.2
+}
+Table {
+  translation 0 0 -0.5
+  name "table2"
+  size 0.6 0.4 0.2
+}
+Robot {
+  children [
+    Panda {
+      controller "<extern>"
+    }
+  ]
+}
