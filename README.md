@@ -1,4 +1,4 @@
-# Webots-ROS
+# Webots-ROS (Franka Panda)
 
 > This is a docker image built for run ROS, MoveIt and Webots. In this project, you can see the demos about how to integrate MoveIt with Webots, and how to use ROS to control robots in Webots directly.
 
