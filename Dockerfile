@@ -5,6 +5,9 @@ FROM dorowu/ubuntu-desktop-lxde-vnc:bionic
 RUN apt-get purge dirmngr -y && apt-get update && apt-get install dirmngr -y
 RUN apt-get dist-upgrade -y
 
+RUN apt-get install python3.6 -y
+RUN apt-get update && apt-get install python3-pip -y
+
 # Adding keys for ROS
 RUN sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
 RUN apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
@@ -16,6 +19,7 @@ RUN apt-get install -y \
 RUN apt-get install -y python-rosinstall python-rosinstall-generator python-wstool build-essential 
 RUN apt-get install vim -y
 RUN rosdep init && rosdep update
+RUN pip3 install rospkg
 
 RUN mkdir -p /root/catkin_ws/src /root/Desktop /root/webots && ln -s /usr/share/applications/lxterminal.desktop /root/Desktop/lxterminal.desktop
 ENV ROS_DISTRO=melodic
