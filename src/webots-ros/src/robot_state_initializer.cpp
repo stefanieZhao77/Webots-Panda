@@ -48,7 +48,7 @@ int main(int argc, char **argv) {
   ros::init(argc, argv, "robot_state_initializer_node");
   ros::NodeHandle node_handle;
   // initial state of panda
-  std::vector<float> panda_ready_state{0, -0.785, 0, -2.356, 0, 1.571, 0.785};
+  std::vector<float> panda_ready_state{0, 0, 0, -2.356, 0, 1.571, 0};
 
   // declaration of varible names to define services and topics name dynamically, the webots reconize the name
   std::string modelName;

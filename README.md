@@ -12,13 +12,13 @@
 ### How to run demos
 
 * open lxterminal
-* run Webots by "webots" in command line && open /root/webots/panda/worlds/panda.wbt 
+* run Webots by "webots" in command line && in the menus, click File menu, open world "/root/webots/panda/worlds/panda.wbt"
 * cd /root/catkin_ws && source devel/setup.bash && roslaunch webots_ros panda_moveit.launch
 
 -----------------------------------
 **Directly controlled by ROS**
-* Change the controller of robot from "external" to "ROS"
-* rosrun webots_ros robot_state_initializer
+* In the Scene Tree on the left, click Robot - children - Panda, change the controller of robot from "external" to "ros"
+* rosrun webots_ros robot_state_initializer_node
 
 ## How to integrate 
 
