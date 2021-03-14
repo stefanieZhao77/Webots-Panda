@@ -8,6 +8,8 @@ RUN apt-get dist-upgrade -y
 RUN apt-get install python3.6 -y
 RUN apt-get update && apt-get install python3-pip -y
 
+
+
 # Adding keys for ROS
 RUN sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
 RUN apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
@@ -73,6 +75,10 @@ RUN apt install --yes ros-melodic-rviz-visual-tools
 COPY src /root/catkin_ws/src
 RUN cd /root/catkin_ws && rosdep install --from-paths src --ignore-src -r -y && catkin build
 RUN chmod +x /root/catkin_ws/src/webots-ros/scripts/*
-# Copy Webots world 
 
+# Add the character transformation in Windows to solve python issues
+RUN apt-get install dos2unix -y
+RUN dos2unix /root/catkin_ws/src/webots-ros/scripts/*.py
+
+# Copy Webots world 
 COPY webots /root/webots
