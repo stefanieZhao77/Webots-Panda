@@ -1,4 +1,4 @@
-FROM dorowu/ubuntu-desktop-lxde-vnc:bionic
+FROM dorowu/ubuntu-desktop-lxde-vnc:focal
 
 
 # Fix dirmngr
@@ -12,22 +12,23 @@ RUN apt-get update && apt-get install python3-pip -y
 
 # Adding keys for ROS
 RUN sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
-RUN apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
+RUN apt install curl wget nano -y
+RUN curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | apt-key add -
 
 # Installing ROS
-RUN apt-get update && apt-get install -y ros-melodic-desktop-full wget nano python-rosdep
+RUN apt-get update && apt-get install -y ros-noetic-desktop-full 
+RUN apt install -y python3-rosdep python3-rosinstall python3-rosinstall-generator python3-wstool build-essential
 RUN apt-get install -y \
-      ros-melodic-libfranka python-catkin-tools libeigen3-dev 
-RUN apt-get install -y python-rosinstall python-rosinstall-generator python-wstool build-essential 
+      ros-noetic-libfranka python3-catkin-tools libeigen3-dev 
 RUN apt-get install vim -y
 RUN rosdep init && rosdep update
 RUN pip3 install rospkg
 
 RUN mkdir -p /root/catkin_ws/src /root/Desktop /root/webots && ln -s /usr/share/applications/lxterminal.desktop /root/Desktop/lxterminal.desktop
-ENV ROS_DISTRO=melodic
+ENV ROS_DISTRO=noetic
 
 RUN /bin/bash -c "echo -e 'umask 000\n \
-      source /opt/ros/melodic/setup.bash\n' >> /root/.bashrc "
+      source /opt/ros/noetic/setup.bash\n' >> /root/.bashrc "
 
 WORKDIR /root/catkin_ws
 # COPY vnc/copyws.sh /root/copyws.sh
@@ -36,11 +37,11 @@ WORKDIR /root/catkin_ws
 
 RUN apt-get update && rosdep install --from-paths . -r -y
 
-RUN catkin config \
-      --extend /opt/ros/melodic
+# RUN catkin config \
+#       --extend /opt/ros/noetic
 
 # Install Moveit
-RUN apt install --yes ros-melodic-moveit
+RUN apt install --yes ros-noetic-moveit
 
 
 # install webots
@@ -67,11 +68,11 @@ ENV PATH /usr/local/webots:${PATH}
 ENV LD_LIBRARY_PATH ${WEBOTS_HOME}/lib/controller
 ENV PYTHONPATH ${WEBOTS_HOME}/lib/controller/python36
 
-RUN sudo apt-get update && apt-get install ros-melodic-webots-ros
+RUN sudo apt-get update && apt-get install ros-noetic-webots-ros
 
 # Copy codes into the environment and build
-RUN apt install --yes ros-melodic-moveit-visual-tools
-RUN apt install --yes ros-melodic-rviz-visual-tools
+RUN apt install --yes ros-noetic-moveit-visual-tools
+RUN apt install --yes ros-noetic-rviz-visual-tools
 COPY src /root/catkin_ws/src
 RUN cd /root/catkin_ws && rosdep install --from-paths src --ignore-src -r -y && catkin build
 RUN chmod +x /root/catkin_ws/src/webots-ros/scripts/*
