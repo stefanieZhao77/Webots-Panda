@@ -68,18 +68,19 @@ ENV PATH /usr/local/webots:${PATH}
 ENV LD_LIBRARY_PATH ${WEBOTS_HOME}/lib/controller
 ENV PYTHONPATH ${WEBOTS_HOME}/lib/controller/python36
 
-RUN sudo apt-get update && apt-get install ros-noetic-webots-ros
+RUN sudo apt-get update && apt-get install -y ros-noetic-webots-ros
 
 # Copy codes into the environment and build
 RUN apt install --yes ros-noetic-moveit-visual-tools
 RUN apt install --yes ros-noetic-rviz-visual-tools
-COPY src /root/catkin_ws/src
-RUN cd /root/catkin_ws && rosdep install --from-paths src --ignore-src -r -y && catkin build
-RUN chmod +x /root/catkin_ws/src/webots-ros/scripts/*
 
+# copy files
+# COPY src /root/catkin_ws/src
+# RUN cd /root/catkin_ws && rosdep install --from-paths src --ignore-src -r -y && catkin build
+# RUN chmod +x /root/catkin_ws/src/webots-ros/scripts/*
 # Add the character transformation in Windows to solve python issues
-RUN apt-get install dos2unix -y
-RUN dos2unix /root/catkin_ws/src/webots-ros/scripts/*.py
+# RUN apt-get install dos2unix -y
+# RUN dos2unix /root/catkin_ws/src/webots-ros/scripts/*.py
 
 # Copy Webots world 
-COPY webots /root/webots
+# COPY webots /root/webots
